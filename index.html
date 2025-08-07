@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Parking</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <ul>
+      <li>Melbourne Parking App</li>
+      <li>Real-Time Parking</li>
+      <li>Trends</li>
+      <li>Help</li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Real-Time Parking</h1>
+
+    <div class="container">
+      <div class="map-section">
+        <p>Live map visualisation of Real-Time availability</p>
+        <div class="map-placeholder">[地图区域]</div>
+        <p>View available spots in real-time by time of day, area and current demand</p>
+        <button>Refresh Spots</button>
+        <button>Detect my location</button>
+      </div>
+
+      <div class="controls">
+        <h2>Select Area</h2>
+        <select>
+          <option>Select Area</option>
+          <option>CBD</option>
+          <option>Southbank</option>
+          <option>Docklands</option>
+        </select>
+
+        <h3>Time of Day</h3>
+        <input type="range" min="0" max="24" value="12" />
+
+        <h3>Demand Level</h3>
+        <div class="demand-buttons">
+          <button>High</button>
+          <button>Medium</button>
+          <button>Low</button>
+        </div>
+
+        <button class="search-btn">Search Now</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
