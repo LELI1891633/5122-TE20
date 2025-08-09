@@ -42,7 +42,7 @@
 
 
       <article class="card">
-        <h2>Privacy & permissions</h2>
+        <h2>Privacy and permissions</h2>
         <p> This app does not track or use your real-time location. All parking availability data is based on public feeds and historical patterns for selected areas. You can browse any area by choosing it from the list—no location access is required.</p>
       </article>
 
