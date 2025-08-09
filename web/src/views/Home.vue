@@ -27,16 +27,13 @@
     </div>
 
     <div class="right-panel">
-      <h2>Live map visualisation of Real-Time availability</h2>
+      <h2>Real-Time availability</h2>
       <div class="illustration">
         <div ref="mapEl" class="map-layer"></div>
       </div>
-      <p class="board-sub">
-        View available spots in real-time by time of day, area and current demand
-      </p>
+
       <div class="board-actions">
-        <button class="btn-outline" @click="onRefresh">Refresh Spots</button>
-        <button class="btn-outline" @click="onLocate">Detect my location</button>
+        <router-link to="/realtimeparking" class="btn-primary">View Find now</router-link>
       </div>
     </div>
   </div>
