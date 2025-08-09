@@ -33,7 +33,7 @@
       </div>
 
       <div class="board-actions">
-        <router-link to="/realtimeparking" class="btn-primary">View Find now</router-link>
+        <router-link to="/realtime" class="btn-primary">View Find now</router-link>
       </div>
     </div>
   </div>
