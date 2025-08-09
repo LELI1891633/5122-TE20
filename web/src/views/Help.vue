@@ -74,6 +74,7 @@
 .page-head {
   text-align: center;
   margin-bottom: 30px;
+  padding: 60px 16px 40px;
 }
 .page-head h1 {
   margin: 0 0 6px;
