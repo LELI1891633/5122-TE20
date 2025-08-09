@@ -1,0 +1,18 @@
+{
+  "name": "workspace",
+  "private": true,
+  "workspaces": [
+    "web",
+    "server"
+  ],
+  "scripts": {
+    "dev:web": "npm run -w web dev",
+    "dev:server": "npm run -w server dev",
+    "dev": "concurrently \"npm run -w server dev\" \"npm run -w web dev\"",
+    "build": "npm run -w server build && npm run -w web build",
+    "start": "npm run -w server start && npm run -w web preview"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
