@@ -161,12 +161,11 @@ function formatHour(hour: number): string {
 }
 
 async function onSearch(){
-  if (!areaInput.value.trim() || areaError.value) return;
-  area.value = areaInput.value;
-  errorMsg.value = '';
-  await loadSpots();
+  errorMsg.value = ''
+  await loadSpots()
 }
-
+// 移除Refresh Spots和Detect my location相关的JS函数、变量、事件绑定
+// 精简注释，只保留关键逻辑的英文注释
 function setDemand(d: Demand){ demand.value = d }
 
 // Map container ref and lifecycle
@@ -178,6 +177,7 @@ let layerGroup: L.LayerGroup | null = null
 onMounted(async () => {
   await loadZones() // Load zones first
   // Set initial area input value
+  areaInput.value = area.value
   
   // Restore timer state from localStorage
   const savedTimer = localStorage.getItem('parkingTimer')
