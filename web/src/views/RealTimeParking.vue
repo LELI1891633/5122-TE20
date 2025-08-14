@@ -284,8 +284,6 @@ function flyToArea(spots: { id:string; lat:number; lng:number; occupied:boolean 
   box-shadow: var(--shadow);
 }
 
-
-
 /* Map overlay info (top left) */
 .map-overlay-info {
   position: absolute;
@@ -490,14 +488,16 @@ function flyToArea(spots: { id:string; lat:number; lng:number; occupied:boolean 
 }
 
 .disclaimer-left h4,
-.disclaimer-right h4 {
+.disclaimer-right h4,
+.disclaimer-center h4 {
   margin: 0 0 8px;
   font-size: 16px;
   font-weight: 600;
 }
 
 .disclaimer-left p,
-.disclaimer-right p {
+.disclaimer-right p,
+.disclaimer-center p {
   margin: 0;
   font-size: 14px;
   line-height: 1.4;
