@@ -12,8 +12,6 @@
         <label>Search Area</label>
         <select v-model="area">
           <option>Melbourne CBD</option>
-          <option>Docklands</option>
-          <option>Southbank</option>
         </select>
         <label>Select Start Year</label>
         <input type="number" min="2011" max="2021" v-model.number="startYear" />
@@ -113,6 +111,8 @@ async function renderChart() {
   }
 
 }
+
+
 
 async function loadMetricData(): Promise<{ labels: string[]; values: number[] }> {
 
@@ -246,7 +246,6 @@ async function fetchSignPlates(): Promise<{ labels: string[]; values: number[] }
 }
 </script>
 <style scoped>
-/* Top banner */
 
 .hero {
   background: linear-gradient(135deg, #9196fc, #8f94fb);
