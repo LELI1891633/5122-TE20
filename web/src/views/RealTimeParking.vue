@@ -11,10 +11,59 @@ const hour = ref<number>(15)
 const errorMsg = ref('')
 const mapLoading = ref(true)
 const searchLoading = ref(false)
+const availableZones = ref<Array<{zoneNumber: string, streetName: string}>>([])
+const selectedZone = ref<string>('')
+let searchTimeout: number | null = null
 
-function onAreaChange() {
+// 获取可用的停车区域
+async function loadAvailableZones() {
+  try {
+    const res = await fetch('/api/realtime/zones')
+    if (!res.ok) throw new Error(`API ${res.status}`)
+    const data = await res.json()
+    availableZones.value = data.zones || []
+  } catch (e: any) {
+    console.error('Error loading zones:', e)
+  }
+}
+
+async function onAreaChange() {
   areaError.value = ''
-  area.value = areaInput.value
+  
+  if (areaInput.value.length < 2) {
+    selectedZone.value = ''
+    area.value = ''
+    return
+  }
+  
+  // 清除之前的定时器
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
+  
+  // 设置防抖延迟
+  searchTimeout = setTimeout(async () => {
+    try {
+      // 使用搜索API查找匹配的区域
+      const res = await fetch(`/api/realtime/search-zones?streetName=${encodeURIComponent(areaInput.value)}`)
+      if (!res.ok) throw new Error(`API ${res.status}`)
+      const data = await res.json()
+      
+      if (data.zones && data.zones.length > 0) {
+        // 选择第一个匹配的区域
+        const matchingZone = data.zones[0]
+        selectedZone.value = matchingZone.zoneNumber
+        area.value = matchingZone.zoneNumber
+      } else {
+        selectedZone.value = ''
+        area.value = ''
+      }
+    } catch (e: any) {
+      console.error('Error searching zones:', e)
+      selectedZone.value = ''
+      area.value = ''
+    }
+  }, 300) // 300ms 延迟
 }
 
 function formatHour(hour: number): string {
@@ -38,6 +87,10 @@ let layerGroup: L.LayerGroup | null = null
 onMounted(async () => {
   await nextTick()
   if (!mapEl.value) return
+  
+  // 加载可用的停车区域
+  await loadAvailableZones()
+  
   map = L.map(mapEl.value, { zoomControl: true, scrollWheelZoom: true })
     .setView([-37.8136, 144.9631], 13)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -62,6 +115,11 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   ro?.disconnect(); ro = null
+  
+  // 清理搜索定时器
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
 })
 
 function handleResize(){
@@ -202,6 +260,10 @@ function flyToArea(spots: { id:string; lat:number; lng:number; occupied:boolean 
           placeholder="e.g. Collins Street, Bourke Street"
         />
         <div v-if="areaError" class="error-message">{{ areaError }}</div>
+        <div v-if="selectedZone" class="zone-info">
+          <span class="zone-badge">Zone {{ selectedZone }}</span>
+          <span class="street-name">{{ availableZones.find(z => z.zoneNumber === selectedZone)?.streetName }}</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -476,6 +538,28 @@ function flyToArea(spots: { id:string; lat:number; lng:number; occupied:boolean 
   color: #FCA5A5;
   font-size: 12px;
   margin-top: 4px;
+}
+
+.zone-info {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zone-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.street-name {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .time-display {

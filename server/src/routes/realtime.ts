@@ -88,6 +88,26 @@ realtimeRouter.get('/zones', async (_req, res) => {
   }
 })
 
+// Search zones by street name
+realtimeRouter.get('/search-zones', async (req, res) => {
+  try {
+    const { streetName } = req.query
+    if (!streetName) {
+      return res.status(400).json({ error: 'Street name is required' })
+    }
+    
+    const zones = await parkingService.searchZonesByStreetName(String(streetName))
+    res.json({ zones })
+  } catch (error: any) {
+    res.status(500).json({ 
+      error: { 
+        code: 'DatabaseError', 
+        message: error.message 
+      } 
+    })
+  }
+})
+
 // Query schema for real-time spots
 const realtimeQuerySchema = z.object({
   query: z.object({

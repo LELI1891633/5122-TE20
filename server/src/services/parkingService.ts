@@ -37,6 +37,32 @@ export class ParkingService {
     }
   }
 
+  // Search zones by street name
+  async searchZonesByStreetName(streetName: string) {
+    try {
+      const [rows] = await pool.execute(`
+        SELECT DISTINCT 
+          z.ParkingZone as zoneNumber,
+          z.OnStreet as streetName,
+          z.StreetFrom,
+          z.StreetTo
+        FROM parking_zones_street_segments z
+        WHERE z.OnStreet LIKE ?
+        ORDER BY z.ParkingZone
+      `, [`%${streetName}%`]) as any[];
+      
+      return rows.map((row: any) => ({
+        zoneNumber: row.zoneNumber,
+        streetName: row.streetName,
+        streetFrom: row.StreetFrom,
+        streetTo: row.StreetTo
+      }))
+    } catch (error: any) {
+      console.error('Error searching zones by street name:', error);
+      return [];
+    }
+  }
+
   // Get real-time parking spots data based on demand level
   async getRealTimeSpots(area: string, hour: number, demand: string) {
     try {
@@ -69,10 +95,9 @@ export class ParkingService {
           SELECT DISTINCT s.Zone_Number
           FROM parking_bay_sensors s
           WHERE s.Latitude IS NOT NULL 
-            AND s.Longitude IS NOT NULL
             AND s.Latitude != 0 
             AND s.Longitude != 0
-          ORDER BY ABS(s.Zone_Number - ?)
+          ORDER BY ABS(CAST(s.Zone_Number AS SIGNED) - CAST(? AS SIGNED))
           LIMIT 5
         `, [area]) as any[];
         
