@@ -1,0 +1,17 @@
+import mysql from 'mysql2/promise'
+import { config } from '../config.js'
+
+// Database connection configuration
+export const dbConfig = {
+  host: config.dbHost,
+  port: config.dbPort,
+  user: config.dbUser,
+  password: config.dbPassword,
+  database: config.dbName,
+  ssl: { rejectUnauthorized: false },
+  connectionLimit: 10,
+  // Remove invalid options: acquireTimeout and timeout are not valid for mysql2
+}
+
+// Create connection pool for better performance
+export const pool = mysql.createPool(dbConfig)
