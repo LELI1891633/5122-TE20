@@ -1,4 +1,12 @@
-node_modules/
-**/dist/
-**/.env
+# build & cache
+web/.vite/
+web/dist/
+server/dist/
+
+# dependencies
+web/node_modules/
+server/node_modules/
+
+# env & logs
+.env
 *.log
