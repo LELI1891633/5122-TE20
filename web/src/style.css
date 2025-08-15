@@ -3,64 +3,138 @@
 
 /* === 设计变量 === */
 :root{
-  --bg-gray:#efefef;
-  --pink:#f6b1b1;
-  --pink-dark:#b65b6a;
-  --panel:#111;
-  --panel-text:#fff;
-  --text:#222;
-  --muted:#666;
-  --radius:12px;
-  --gap:16px;
+  --primary-purple: #6B46C1;
+  --secondary-purple: #9333EA;
+  --accent-orange: #F97316;
+  --success-green: #10B981;
+  --danger-red: #EF4444;
+  --warning-yellow: #F59E0B;
+  --text-white: #FFFFFF;
+  --text-dark: #1F2937;
+  --bg-overlay: rgba(107, 70, 193, 0.8);
+  --bg-light: rgba(255, 255, 255, 0.95);
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* === 基础 reset / 全局 === */
 * { box-sizing: border-box; }
-html, body, #app { height: 100%; }
+html, body, #app { height: 100%; margin: 0; }
 body {
-  margin: 0;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg-gray);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+  min-height: 100vh;
 }
 
 /* 链接和按钮的基础态 */
-a { color: #6c5ce7; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* === 布局与排版工具类（两个页面都会用到） === */
-.container{ max-width:1100px; margin:0 auto; padding:24px 16px; }
-
-.h1{ font-size:40px; font-weight:800; margin:0 0 16px; }
-.h2{ font-size:28px; font-weight:700; margin:0 0 12px; }
-.lead{ color:var(--muted); line-height:1.6; }
-
-.card{
-  background:#fff; border:1px solid #e8e8e8;
-  border-radius:var(--radius); padding:16px;
+a { 
+  color: var(--text-white); 
+  text-decoration: none; 
+  transition: all 0.3s ease;
+}
+a:hover { 
+  text-decoration: none;
+  opacity: 0.8;
 }
 
-/* 表单与按钮 */
-.input, .select{
-  width:100%; padding:10px 12px; border:1px solid #ddd;
-  border-radius:8px; background:#fff; font: inherit;
+/* 通用组件样式 */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
 }
 
-.btn{
-  padding:10px 14px; border:1px solid #ccc; border-radius:8px;
-  background:#fff; cursor:pointer; font: inherit;
+.btn-primary {
+  background: var(--accent-orange);
+  color: var(--text-white);
 }
-.btn:hover{ border-color:#999; }
-.btn.primary{ background:#6c5ce7; color:#fff; border-color:#6c5ce7; }
-.btn.grouped{ margin-right:8px; }
-.btn.active{ background:#111; color:#fff; }
 
-/* 顶部简单导航（App.vue 用） */
-nav { display:flex; gap:16px; padding:12px 16px; border-bottom:1px solid #eee; background:#fff; }
-nav a.router-link-active { font-weight:700; }
+.btn-primary:hover {
+  background: #EA580C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
 
-/* 响应式小优化 */
-@media (max-width: 900px){
-  .h1{ font-size:32px; }
-  .h2{ font-size:22px; }
+.btn-secondary {
+  background: var(--text-white);
+  color: var(--primary-purple);
+  border: 1px solid var(--primary-purple);
+}
+
+.btn-secondary:hover {
+  background: var(--primary-purple);
+  color: var(--text-white);
+}
+
+/* 输入框样式 */
+.input, .select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: var(--text-white);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.input:focus, .select:focus {
+  outline: none;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--text-white);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+/* 容器样式 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 页面顶部间距 */
+.page-content {
+  padding-top: 80px;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-purple);
 }
