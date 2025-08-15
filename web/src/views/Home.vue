@@ -2,7 +2,7 @@
   <div class="home">
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-title">We help find you kar's parking spaces</h1>
+        <h1 class="hero-title">We help find you Car's parking spaces</h1>
         <p class="hero-subtitle">Professional and trustworthy</p>
         
         <!-- Feature Cards Section -->
