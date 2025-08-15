@@ -1,272 +1,259 @@
 <template>
-    <div class="home">  
-      <section class="hero">
-        <div class="wrap hero-inner">
-          <h1>Find Parking fast in Melbourne CBD</h1>
-          <p>Live parking data and trends to reduce congestion and save you time</p>
-          <router-link to="/realtime" class="btn-primary">Search Available Spots</router-link>
+  <div class="home">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">We help find you kar's parking spaces</h1>
+        <p class="hero-subtitle">Professional and trustworthy</p>
+        
+        <!-- Feature Cards Section -->
+        <div class="features-container">
+          <div class="feature-card">
+            <h3>Real-Time Parking</h3>
+            <p>Find available parking spots in real-time with live map visualization</p>
+            <router-link to="/realtime" class="feature-btn">Search Now</router-link>
+          </div>
+          
+          <div class="feature-card">
+            <h3>Parking Trends</h3>
+            <p>View parking patterns and demand analysis to plan your trips better</p>
+            <router-link to="/trends" class="feature-btn">View Trends</router-link>
+          </div>
         </div>
-      </section>
-  
-      <section class="top-section">
-  <div class="wrap two-col">
-    <div class="left-panel">
-      <div class="left-top-row">
-        <h2>Why use Melbourne parking app?</h2>
-        <ul>
-          <li>Find spots faster ✔</li>
-          <li>Save money and time ✔</li>
-          <li>Real-time tracking ✔</li>
-        </ul>
+        
+        <div class="ai-badge">
+          AI-Powered Real-Time Parking with 66% accuracy
+        </div>
       </div>
-      <div class="left-bottom-row">
-        <h2>Parking Trends</h2>
-        <p>See peak hours and demand patterns to plan ahead.</p>
-        <router-link to="/trends" class="btn-primary">View Trends</router-link>
-      </div>
-    </div>
-
-    <div class="right-panel">
-      <h2>Real-Time availability</h2>
-      <div class="illustration">
-        <div ref="mapEl" class="map-layer"></div>
-      </div>
-
-      <div class="board-actions">
-        <router-link to="/realtime" class="btn-primary">View Find now</router-link>
-      </div>
-    </div>
+    </section>
+    
+    <!-- Add Footer -->
+    <AppFooter />
   </div>
-</section>
+</template>
 
-    </div>
-  </template>
-  
-  
-  <script setup>
-  import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-  import L from 'leaflet'
-  import 'leaflet/dist/leaflet.css'
-  
-  const mapEl = ref(null)
-  let map = null
-  let ro = null
-  
-  function onRefresh(){ if (map) map.invalidateSize() }
-  function onLocate(){
-    if (!map || !navigator.geolocation) return
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords
-      map.setView([latitude, longitude], 15)
-      L.marker([latitude, longitude]).addTo(map)
-    })
-  }
-  
-  function handleResize(){ setTimeout(() => map && map.invalidateSize(), 80) }
-  
-  onMounted(async () => {
-    await nextTick()
-    if (!mapEl.value) return
-    map = L.map(mapEl.value, { zoomControl: true, scrollWheelZoom: true })
-      .setView([-37.8136, 144.9631], 13)
-  
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map)
-  
-    requestAnimationFrame(() => map.invalidateSize())
-  
-    ro = new ResizeObserver(() => map && map.invalidateSize())
-    ro.observe(mapEl.value)
-    window.addEventListener('resize', handleResize)
-  })
-  
-  onUnmounted(() => {
-    window.removeEventListener('resize', handleResize)
-    ro && ro.disconnect()
-    ro = null
-    map && map.remove()
-    map = null
-  })
-  </script>
-  
-  
-  <style scoped>
+<script setup lang="ts">
+import AppFooter from '@/components/AppFooter.vue'
+// Static landing page - no complex logic needed
+</script>
+
+<style scoped>
 .home {
-  color: #333;
-  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  background: 
+    linear-gradient(rgba(107, 70, 193, 0.8), rgba(147, 51, 234, 0.8)), 
+    url('../assets/images/city.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
 }
 
-.wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Hero section */
 .hero {
-  background: linear-gradient(135deg, #9196fc, #8f94fb);
-  color: white;
-}
-.hero-inner {
-  padding: 60px 16px 40px;
-  text-align: center;
-}
-.hero-inner h1 {
-  font-size: 42px;
-  font-weight: 900;
-  margin: 0 0 12px;
-}
-.hero-inner p {
-  margin: 0 0 20px;
-  opacity: 0.95;
-  font-size: 18px;
-}
-.btn-primary {
-  margin-top: 8px;
-  background: #fff;
-  color: #4e54c8;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-block;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-.btn-primary:hover {
-  background: #f0f0ff;
-  transform: translateY(-2px);
-}
-
-
-.top-section {
-  background: #fff;
-}
-.two-col {
-  display: grid;
-  grid-template-columns: 0.5fr 1fr;
-  gap: 24px;
-  padding: 40px 16px 60px;
-}
-
-.left-panel {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 24px;
-}
-.left-top-row,
-.left-top-row {
-  background: #4e54c8;
-  color: #fff;
-  border-radius: 12px;
-  padding: 22px 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  /* Center items vertically and horizontally */
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   text-align: center;
-}
-
-.left-top-row h2 {
-  margin: 0 0 16px;
-  font-weight: 800;
-  font-size: 24px; /* slightly bigger heading */
-}
-
-.left-top-row ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 18px; /* increase point size */
-  line-height: 1.8;
-}
-
-.left-bottom-row {
-  background: #f9f9ff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 22px 20px;
-  color: #4e54c8;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-  text-align: center; 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.left-bottom-row:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-}
-.left-bottom-row h2 {
-  margin: 0 0 14px;
-  font-weight: 800;
-  font-size: 22px; /* slightly larger heading */
-  color: #4e54c8;
-}
-.left-bottom-row p {
-  margin: 0 0 16px;
-  opacity: 0.9;
-  font-size: 16px; /* slightly larger text */
-}
-
-
-.right-panel {
-  background: #f9f9ff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 22px 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  color: #4e54c8;
-}
-.right-panel h2 {
-  font-size: 24px;
-  margin: 0 0 12px;
-  font-weight: 800;
-  color: #4e54c8;
-}
-.illustration {
-  width: 100%;
-  height: clamp(320px, 50vh, 560px);
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
+  padding: 100px 20px 80px;
   position: relative;
-  background: #0e0e0e;
-  margin-bottom: 16px;
 }
 
-.map-layer {
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.map-layer :deep(.leaflet-container) {
+.hero-content {
+  max-width: 900px;
   width: 100%;
-  height: 100%;
-  background: transparent;
-}
-.map-layer :deep(img) {
-  max-width: none !important;
 }
 
-/* Buttons inside panels */
-.board-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 8px;
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive tweaks */
-@media (max-width: 992px) {
-  .two-col {
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 0 48px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Features Section */
+.features-container {
+  max-width: 1000px;
+  margin: 0 auto 48px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.feature-card {
+  background: rgba(107, 70, 193, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  background: rgba(107, 70, 193, 1);
+}
+
+.feature-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.feature-card p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.feature-btn {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.feature-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ai-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 20px 60px;
+    min-height: 100vh;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+  
+  .features-container {
     grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .feature-card {
+    padding: 25px 20px;
+  }
+  
+  .feature-card h3 {
+    font-size: 20px;
+  }
+  
+  .feature-card p {
+    font-size: 14px;
+  }
+  
+  .ai-badge {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 80px 16px 40px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+  }
+  
+  .features-container {
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  
+  .feature-card {
+    padding: 20px 16px;
+  }
+  
+  .feature-card h3 {
+    font-size: 18px;
+  }
+  
+  .feature-card p {
+    font-size: 13px;
+  }
+  
+  .feature-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .ai-badge {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .feature-card {
+    padding: 18px 14px;
+  }
+  
+  .feature-card h3 {
+    font-size: 17px;
+  }
+  
+  .feature-card p {
+    font-size: 12px;
+  }
+  
+  .feature-btn {
+    padding: 8px 16px;
+    font-size: 13px;
   }
 }
 </style>
