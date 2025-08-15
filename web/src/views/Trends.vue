@@ -6,6 +6,7 @@
     </div>
   </div>
   <div class="tr-container">
+
     <!-- Vehicle Ownership Chart -->
     <section class="chart-board">
       <div class="inner-white">
@@ -200,9 +201,11 @@ function renderPopulationChart() {
   } catch (e) {
     console.error('Error rendering population chart:', e)
     populationLoading.value = false
+
   }
 }
 </script>
+
 
 <style scoped>
 .hero {
